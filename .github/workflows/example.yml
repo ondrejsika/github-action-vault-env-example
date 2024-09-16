@@ -1,0 +1,20 @@
+name: Example of .env in Hashicorp Vault
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download siklabs/slu
+        run: curl -fsSL https://raw.githubusercontent.com/sikalabs/slu/master/install.sh | sudo sh
+
+      - name: Get .env from Hashicorp Vault
+        run: slu vault create-env-file -a ${{ secrets.VAULT_ADDR }} -t ${{ secrets.VAULT_TOKEN }} -p ${{ secrets.VAULT_PATH }}
+
+      - name: Print .env
+        run: cat .env
